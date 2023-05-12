@@ -16,8 +16,8 @@ private:
     uint8_t total_task;        
 public:
     Multi_Task();
-    bool init_new_task(void (*call_back)(),const uint8_t& interval);
-
+    bool add_new_task(void (*call_back)(),const unsigned long& interval);
+    void run();
 };
-
+extern Multi_Task multi_task;
 #endif
