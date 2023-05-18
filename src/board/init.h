@@ -7,6 +7,8 @@
 
 static void board_int(){
     DCOM_INIT
+    LED_INIT
+    DCOM_ON
     sensor.init();
     connection.wifi_init();
 }

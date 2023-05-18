@@ -12,13 +12,14 @@ class Measuring {
 private:
     double wl_local;
     double wl_remote;
-    void to_json(String& data);
+    
 public:
     Measuring();
     void init();
     bool start_measuring();
     double get_wl();
     double verify_value();
+    String to_json();
 };
 extern Measuring measuring;
 #endif

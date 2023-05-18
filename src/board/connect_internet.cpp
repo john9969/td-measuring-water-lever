@@ -18,7 +18,9 @@ void ConnectInternet::wifi_init(){
 }
 /*****************************EXTERN FUNCTION************************************************************/
 //loop to check connect per
+bool is_disable = false;
 void checking_connection() {
+  if(is_disable) return;
   if(WiFi.status() == WL_CONNECTED){
     if(connection.get_internet_status() == ConnectInternet::INTERNET_CONNECTED ) return;
       connection.set_internet_status(ConnectInternet::INTERNET_CONNECTED);
@@ -27,6 +29,7 @@ void checking_connection() {
       connection.set_timeout_connect_wifi(0); 
       return;
   }
+  LED_TOGGLE
   int p_timeout_connect_wifi = connection.get_timeout_connect_wifi();
   if(p_timeout_connect_wifi == 0){
     p_timeout_connect_wifi = -1;
@@ -37,7 +40,7 @@ void checking_connection() {
     return;
   }
   if(p_timeout_connect_wifi <= -1){
-    p_timeout_connect_wifi = 30;
+    p_timeout_connect_wifi = TIME_OUT_CONNECT_WIFI;
     connection.set_timeout_connect_wifi(p_timeout_connect_wifi);
     DCOM_ON
     Serial.println("dcom on");

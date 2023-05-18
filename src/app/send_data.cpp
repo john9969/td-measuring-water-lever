@@ -18,10 +18,11 @@ bool app_send_data::send_data(String data, const DATA_TYPE& type) {
 "vol"       :10000,
 */
 String app_send_data::to_json(){
-  String data ="{";
-  data  +=  "\"serial_number\":"  SERIAL_NUMBER;
-  data  +=  "\"type_data\":   
-  }
+  String data ="";
+  data  +=  "\"serial_number\":"  SERIAL_NUMBER ",";
+  return data;
+}
+
 bool app_send_data::check_response() {
   // Check if client is connected
   
