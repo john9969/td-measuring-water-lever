@@ -9,6 +9,7 @@
 class ConnectInternet {
 public:
   typedef enum {
+  INTERNET_INIT,
   INTERNET_DISCONNECTED,
   INTERNET_CONNECTING,
   INTERNET_CONNECTED,
@@ -19,6 +20,7 @@ public:
     String ssid;
     String password;
     int timeout_connect_wifi;
+    int times_connect_wifi;
     String local_ip;
     internet_status_t internet_status;
     void connect_to_internet();

@@ -5,7 +5,7 @@
 /*DEFINE HERE*/
 
 //************************************************************************************
-typedef struct Rtc
+struct Rtc
 {
     uint16_t year;
     uint8_t month;

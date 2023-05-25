@@ -28,7 +28,7 @@ void loop() {
             Serial.println("off ok");
         }
         if(data == "ds"){
-            sensor.read_distance(10);
+            sensor.read_water_lever();
             Serial.println("ds ok ");
         }
     }

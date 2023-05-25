@@ -1,9 +1,9 @@
 #include "connect_internet.h"
 ConnectInternet connection;
 ConnectInternet::ConnectInternet() {
-  this->internet_status       = INTERNET_DISCONNECTED;
+  this->internet_status       = INTERNET_INIT;
   this->timeout_connect_wifi  = TIME_OUT_CONNECT_WIFI;
-  this->ssid                  = SSID;
+  this->ssid                  = SSID1;
   this->password              = PASS;
 }
 
@@ -18,9 +18,9 @@ void ConnectInternet::wifi_init(){
 }
 /*****************************EXTERN FUNCTION************************************************************/
 //loop to check connect per
-bool is_disable = false;
+int times_connect_wifi = TIMES_CONNECT_WIFI;
 void checking_connection() {
-  if(is_disable) return;
+  if(connection.get_internet_status() == ConnectInternet::INTERNET_DISCONNECTED) return;
   if(WiFi.status() == WL_CONNECTED){
     if(connection.get_internet_status() == ConnectInternet::INTERNET_CONNECTED ) return;
       connection.set_internet_status(ConnectInternet::INTERNET_CONNECTED);
@@ -29,7 +29,6 @@ void checking_connection() {
       connection.set_timeout_connect_wifi(0); 
       return;
   }
-  LED_TOGGLE
   int p_timeout_connect_wifi = connection.get_timeout_connect_wifi();
   if(p_timeout_connect_wifi == 0){
     p_timeout_connect_wifi = -1;
@@ -43,14 +42,20 @@ void checking_connection() {
     p_timeout_connect_wifi = TIME_OUT_CONNECT_WIFI;
     connection.set_timeout_connect_wifi(p_timeout_connect_wifi);
     DCOM_ON
+    times_connect_wifi--;
     Serial.println("dcom on");
+    
     return;
   }
   if(p_timeout_connect_wifi > 0){
     p_timeout_connect_wifi--;
     connection.set_timeout_connect_wifi(p_timeout_connect_wifi);
-    Serial.print("connecting to wifi: timeout ");
-    Serial.println(p_timeout_connect_wifi);
+    // Serial.print("connecting to wifi: timeout ");
+    // Serial.println(p_timeout_connect_wifi);
+  }
+  if(times_connect_wifi <= 0){
+    connection.set_internet_status(ConnectInternet::INTERNET_DISCONNECTED);
+    DBln("Wifi disconnected, stop trying");
   }
 }
 /************************************SET&GET FUNCTION*****************************************************/
