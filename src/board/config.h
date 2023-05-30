@@ -16,5 +16,5 @@
 #define TIMEOUT_OFF_WIFI                10
 #define DBln                            Serial.println
 #define DB                              Serial.print
-#define PASS                            "12345678"
-#define SSID1                           "bss_v1.0_002"
+#define PASS                            "j12345678"
+#define SSID1                           "laser_sensor"

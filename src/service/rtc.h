@@ -33,11 +33,10 @@ typedef enum DATE_TIME_TYPE{
 } DATE_TIME_TYPE;
     Date_Time();
     String now(const DATE_TIME_TYPE& date_time_type);
-    void update_time_from_server();
+    void to_json(String & data);
+    uint64_t estimate_time();
     void from_string(String date_time);
     uint64_t get_time_remain(uint8_t min_wake_up);
-    bool add_new_task(void (*call_back)(),const uint8_t& interval);
-    void run();
 };
 extern Date_Time date_time;
 #endif

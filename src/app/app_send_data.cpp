@@ -13,11 +13,12 @@ App_Send_Data::App_Send_Data() {
 
 void App_Send_Data::process() {
   String data_send = "";
+  String data_server = "";
   switch (get_app_op()) {
   case APP_OP_CHECK_VOL:
-    if(get_vol_input() <= MIN_VOL_RUNNING){
-      break;
-    }
+    // if(get_vol_input() <= MIN_VOL_RUNNING){
+    //   break;
+    // }
     set_app_op(APP_OP_ON_SENSOR);
     DBln("done check vol");
     break;
@@ -40,7 +41,7 @@ void App_Send_Data::process() {
     break;
   case APP_OP_CONNECT_WIFI:
     if(connection.get_internet_status() == ConnectInternet::INTERNET_CONNECTED){
-      set_app_op(APP_OP_GET_WATER_LEVER);
+      set_app_op(APP_OP_GET_TIME);
       DBln("wifi connect ok");
       break;
     }
@@ -48,6 +49,21 @@ void App_Send_Data::process() {
       set_app_op(APP_OP_FAIL);
       DBln("wifi connect fail");
     }
+    break;
+  case APP_OP_GET_TIME:
+    static int timeout_gettime =0;
+    DBln("get time");
+    if(http_request.get(API_HTTP_GET_TIME) == 200){
+      date_time.from_string(http_request.get_data_response());
+      DBln("get time success: " + date_time.now(Date_Time::DATE_TIME_TYPE_DDMMYY));
+      set_app_op(APP_OP_GET_WATER_LEVER);
+    }
+    else{
+      timeout_gettime ++;
+    }
+    if(timeout_gettime > 5) {
+      set_app_op(APP_OP_FAIL);
+    }  
     break;
   case APP_OP_GET_WATER_LEVER:
      if(sensor.get_op_state() == laser_sensor::OP_STATE_ABORT){
@@ -68,16 +84,27 @@ void App_Send_Data::process() {
     break;
   case APP_OP_SEND:
     DB("Send data: ");
+    date_time.to_json(data_send);
     sensor.to_json(data_send);
     to_json(data_send);
     DBln(data_send);
+    http_request.post(API_HTTP_POST_DATA,data_send);
     set_app_op(APP_OP_DONE);
     break;
   case APP_OP_DONE:
-    DBln("done");
-
+    static uint64_t sleep_time = date_time.estimate_time();
+    DBln("time wakeup: " + String(sleep_time));
+    ESP.deepSleep(sleep_time);
+    // sleep(sleep_time);
+    set_app_op(APP_OP_SLEEP);
+    break;
+  case APP_OP_SLEEP:
     break;
   case APP_OP_FAIL:
+      date_time.to_json(data_send);
+      sensor.to_json(data_send);
+      to_json(data_send);
+      ESP.deepSleep(1800e6);
     break;
   }
   
@@ -90,12 +117,13 @@ void App_Send_Data::process() {
 "water_value":num,
 "vol"       :10000,
 */
+//prepare for the last
 void App_Send_Data::to_json(String& data){
-  
-  data  +=  "\"serial_number\":"  SERIAL_NUMBER ",";
+  data = "{" + data;
+  data  +=  "\"serial_number\":\""  SERIAL_NUMBER "\",";
   data  +=  "\"type\":\"water_lever\",";
-  //data  +=  "\"water_value\":" + String(get_water)
-   data  += "\"vol\":" + String(get_vol_input()) + ",";
+  data  += "\"vol\":" + String(get_vol_input());
+  data  += "}";
 }
 
 

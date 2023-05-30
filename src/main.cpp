@@ -19,6 +19,9 @@ void loop() {
             Serial.println("reset ok");
             ESP.restart();
         }
+        if(data == "get_time"){
+            
+        }
         if(data == "on"){
             sensor.on_sensor();
             Serial.println("on ok");

@@ -4,8 +4,10 @@
 #include "board/blink_led.h"
 #include "board/laser_sensor.h"
 #include "board/connect_internet.h"
+#include "service/http_request.h"
 #include "board/read_adc.h"
 #include "service/rtc.h"
+#include "board/sleep_mode.h"
 class App_Send_Data {
 
 public:
@@ -19,9 +21,11 @@ public:
     APP_OP_ON_SENSOR,
     APP_OP_CONNECT_WIFI,
     APP_OP_GET_WATER_LEVER,
+    APP_OP_GET_TIME,
     APP_OP_SEND,
     APP_OP_DONE,
-    APP_OP_FAIL
+    APP_OP_FAIL,
+    APP_OP_SLEEP,
   };
 
   App_Send_Data();

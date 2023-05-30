@@ -1,7 +1,7 @@
 #ifndef READ_ADC
 #define READ_ADC
 #include <Arduino.h>
-#define MULTIPILER 1     //unit minivol
+#define MULTIPILER 37     //unit minivol
 #define ADC_PIN_OUT A0
 // typedef struct read_adc
 // {

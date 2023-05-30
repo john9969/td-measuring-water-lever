@@ -38,7 +38,7 @@ private:
     void init_uart_port();
     void uart_send_data(const byte data[]);
     void uart_read_data(char* buff, int& length);
-    bool parse_data_receive(char* buff, const int& length);
+    bool parse_data_receive(char* buff, int& length);
     bool is_uart_available() const;
     void set_distance( const double& distance);
     double get_distance();
