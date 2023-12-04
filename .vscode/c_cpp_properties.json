@@ -107,7 +107,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60107",
+                "PLATFORMIO=60111",
                 "ESP8266",
                 "ARDUINO_ARCH_ESP8266",
                 "ARDUINO_ESP8266_ADAFRUIT_HUZZAH",
@@ -129,8 +129,8 @@
                 "MMU_ICACHE_SIZE=0x8000",
                 ""
             ],
-            "cStandard": "c17",
-            "cppStandard": "c++17",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
             "compilerPath": "C:/Users/TUAN/.platformio/packages/toolchain-xtensa/bin/xtensa-lx106-elf-gcc.exe",
             "compilerArgs": [
                 "-mlongcalls",
